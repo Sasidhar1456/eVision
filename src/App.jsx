@@ -2,6 +2,7 @@
 import { Routes , Route } from 'react-router-dom'
 import Home from './Home'
 import Admin from './Admin'
+import Forget from './Components/Forget'
 
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
       <Routes>
           <Route path='/*' element={<Home />} />
           <Route path='/admin/*' element={<Admin />} />
+          <Route path="/forget"  element= {<Forget />} />
           
         </Routes> 
     </>
