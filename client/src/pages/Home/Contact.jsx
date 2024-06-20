@@ -44,6 +44,20 @@ function Contact() {
                 </div>
                 <div className=" h-full flex flex-col justify-center items-center  mx-3 mb-3 -mt-36 md:mt-0 ">
                     <form onSubmit={handleSubmit} className="flex flex-col items-center">
+                    <input
+                            type="text"
+                            placeholder="Your Name"
+                            className="mb-7 w-72 md:w-96 h-12 outline-none border-2 border-gray-500 focus:border-2 focus:border-black rounded-md pl-2 text-lg text-primary"
+                            value={email} required={true}
+                            onChange={handleEmailChange}
+                        />
+                    <input
+                            type="tel"
+                            placeholder="Your Phone"
+                            className="mb-7 w-72 md:w-96 h-12 outline-none border-2 border-gray-500 focus:border-2 focus:border-black rounded-md pl-2 text-lg text-primary"
+                            value={email} required={true}
+                            onChange={handleEmailChange}
+                        />
                         <input
                             type="email"
                             placeholder="Your Email"
