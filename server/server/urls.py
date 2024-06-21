@@ -15,6 +15,8 @@ urlpatterns = [
     path('', include('attended.urls')),
     path('', include('breaches.urls')),
     path('not_attended/', NotAttendedView.as_view(), name='not_attended'),
+    path('', include('insert_attended.urls')),
+    path('', include('add_breach.urls')),
 ]
 
 if settings.DEBUG:

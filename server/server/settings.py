@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     "attended",
     "breaches",
     "notattended",
+    "insert_attended",
+    "add_breach",
 ]
 
 MIDDLEWARE = [

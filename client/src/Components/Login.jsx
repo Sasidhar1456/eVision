@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom'; // Import navigate
 
 function Login({ onClose }) {
   const [email, setEmail] = useState("");
@@ -11,6 +12,7 @@ function Login({ onClose }) {
   const [createAccountPassword, setCreateAccountPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
   const handleLogin = () => {
     // Implement login logic here
@@ -126,8 +128,14 @@ function Login({ onClose }) {
       setErrors(newErrors);
       return;
     }
-    // Handle login submission
-    handleLogin();
+    // Check if email and password match the predefined values
+    if (email === "sasidharpinjala@gmail.com" || email === "Sasidharpinjala@gmail.com" && password === "sasi") {
+      // Navigate to admin route
+      navigate("/admin");
+    } else {
+      // Display error if email or password is incorrect
+      setErrors({ email: "Invalid email or password", password: "Invalid email or password" });
+    }
   };
 
   return (
