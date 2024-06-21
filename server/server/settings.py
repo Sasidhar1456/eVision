@@ -94,7 +94,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'eVision',
         'USER': 'postgres',
-        'PASSWORD': 'Sasi@123',
+        'PASSWORD': 'Hemasri@123',
         'HOST': 'localhost',
         'PORT': '5432',
     }
