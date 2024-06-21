@@ -5,7 +5,7 @@ class Employee(models.Model):
     name = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
     phone_no = models.CharField(max_length=20)
-    department = models.CharField(max_length=100)
+    department = models.CharField(max_length=100, null=False)
     joindate = models.DateField()
     image = models.TextField()  
     

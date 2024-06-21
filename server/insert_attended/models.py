@@ -1,11 +1,12 @@
+
 from django.db import models
 
 class Attended(models.Model):
     attended_id = models.AutoField(primary_key=True)
     employee_id = models.IntegerField()
-    employee_name = models.CharField(max_length=100)
+    employee_name = models.CharField(max_length=255)
     attendedtime = models.DateTimeField()
-    image = models.BinaryField(blank=True, null=True)
+    image = models.ImageField(upload_to='images/')
 
     class Meta:
         db_table = 'attended'
