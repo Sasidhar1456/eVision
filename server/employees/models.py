@@ -7,7 +7,7 @@ class Employee(models.Model):
     phone_no = models.CharField(max_length=20)
     department = models.CharField(max_length=100, null=False)
     joindate = models.DateField()
-    image = models.TextField()  
+    image = models.TextField(blank=True, null=True) 
     
     class Meta:
         db_table = 'employees'  

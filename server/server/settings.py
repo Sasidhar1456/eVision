@@ -49,7 +49,10 @@ INSTALLED_APPS = [
     "notattended",
     "insert_attended",
     "add_breach",
-    'corsheaders',
+
+    "create_account",
+      'corsheaders',
+  
 ]
 
 MIDDLEWARE = [
