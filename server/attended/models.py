@@ -5,7 +5,7 @@ class Attended(models.Model):
     employee_id = models.IntegerField()
     employee_name = models.CharField(max_length=100)
     attendedtime = models.DateTimeField()
-    image = models.BinaryField(blank=True, null=True)
+    image = models.TextField(blank=True, null=True)
 
     class Meta:
         db_table = 'attended'

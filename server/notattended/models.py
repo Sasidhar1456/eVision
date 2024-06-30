@@ -7,7 +7,7 @@ class Employee(models.Model):
     phone_no = models.CharField(max_length=15)
     department = models.CharField(max_length=100)
     joindate = models.DateField()
-    image = models.BinaryField(blank=True, null=True)
+    image = models.TextField(blank=True, null=True)
 
     class Meta:
         db_table = 'employees'
@@ -20,7 +20,7 @@ class Attended(models.Model):
     attended_id = models.AutoField(primary_key=True)
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
     attendedtime = models.DateTimeField()
-    image = models.BinaryField(blank=True, null=True)
+    image = models.TextField(blank=True, null=True)
 
     class Meta:
         db_table = 'attended'
