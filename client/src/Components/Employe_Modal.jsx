@@ -13,10 +13,17 @@ function Employe_Modal({ onClose, employee }) {
   };
 
   const handleImageChange = (e) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      image: URL.createObjectURL(e.target.files[0]), // Handle image preview
-    }));
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setFormData((prevData) => ({
+        ...prevData,
+        image: reader.result,
+      }));
+    };
+    if (file) {
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleUpdateClick = () => {
@@ -25,9 +32,9 @@ function Employe_Modal({ onClose, employee }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission logic here
-    setIsEditing(false);
-    onClose();
+    // Handle form submission logic here (e.g., update employee details)
+    setIsEditing(false); // Exit edit mode
+    onClose(); // Close the modal
   };
 
   const handleCancel = () => {
@@ -67,7 +74,7 @@ function Employe_Modal({ onClose, employee }) {
                 id="name"
                 name="name"
                 className="w-72 md:w-96 h-12 outline-none border-2 border-gray-500 focus:border-2 focus:border-black rounded-md pl-2 text-lg text-primary"
-                value={formData.Name}
+                value={formData.name}
                 onChange={handleInputChange}
                 required
               />
@@ -81,7 +88,7 @@ function Employe_Modal({ onClose, employee }) {
                 id="email"
                 name="email"
                 className="w-72 md:w-96 h-12 outline-none border-2 border-gray-500 focus:border-2 focus:border-black rounded-md pl-2 text-lg text-primary"
-                value={formData.Email}
+                value={formData.email}
                 onChange={handleInputChange}
                 required
               />
@@ -95,7 +102,7 @@ function Employe_Modal({ onClose, employee }) {
                 id="phone"
                 name="phone"
                 className="w-72 md:w-96 h-12 outline-none border-2 border-gray-500 focus:border-2 focus:border-black rounded-md pl-2 text-lg text-primary"
-                value={formData.Phone}
+                value={formData.phone_no}
                 onChange={handleInputChange}
                 required
               />
@@ -109,7 +116,7 @@ function Employe_Modal({ onClose, employee }) {
                 id="department"
                 name="department"
                 className="w-72 md:w-96 h-12 outline-none border-2 border-gray-500 focus:border-2 focus:border-black rounded-md pl-2 text-lg text-primary"
-                value={formData.Department}
+                value={formData.department}
                 onChange={handleInputChange}
                 required
               />
@@ -123,7 +130,7 @@ function Employe_Modal({ onClose, employee }) {
                 id="joiningDate"
                 name="joiningDate"
                 className="w-72 md:w-96 h-12 outline-none border-2 border-gray-500 focus:border-2 focus:border-black rounded-md pl-2 text-lg text-primary"
-                value={formData.JoiningDate}
+                value={formData.joindate}
                 onChange={handleInputChange}
                 required
               />
@@ -138,7 +145,6 @@ function Employe_Modal({ onClose, employee }) {
                 name="image"
                 className="w-72 md:w-96 h-12 outline-none rounded-md pl-2 text-lg text-primary"
                 onChange={handleImageChange}
-                required
               />
             </div>
             <div className="flex items-center justify-between">
@@ -151,7 +157,7 @@ function Employe_Modal({ onClose, employee }) {
               <button
                 type="button"
                 className="bg-gray-500 text-white px-3 py-1 rounded-md w-36 md:w-48 h-12"
-                onClick={handleCancel} // Call handleCancel here
+                onClick={handleCancel}
               >
                 Cancel
               </button>
@@ -160,23 +166,23 @@ function Employe_Modal({ onClose, employee }) {
         ) : (
           <div>
             <div className="mb-4">
-              <p className="text-lg font-semibold">Name: {formData.Name}</p>
+              <p className="text-lg font-semibold">Name: {employee.name}</p>
             </div>
             <div className="mb-4">
-              <p className="text-lg font-semibold">Email: {formData.Email}</p>
+              <p className="text-lg font-semibold">Email: {employee.email}</p>
             </div>
             <div className="mb-4">
-              <p className="text-lg font-semibold">Phone: {formData.Phone}</p>
+              <p className="text-lg font-semibold">Phone: {employee.phone_no}</p>
             </div>
             <div className="mb-4">
-              <p className="text-lg font-semibold">Department: {formData.Department}</p>
+              <p className="text-lg font-semibold">Department: {employee.department}</p>
             </div>
             <div className="mb-4">
-              <p className="text-lg font-semibold">Joining Date: {formData.JoiningDate}</p>
+              <p className="text-lg font-semibold">Joining Date: {employee.joindate}</p>
             </div>
             <div className="mb-4">
               <img
-                src={formData.Image}
+                src={`data:image/jpeg;base64,${employee.image}`}
                 alt="Employee"
                 className="w-72 h-72 object-cover rounded-md"
               />

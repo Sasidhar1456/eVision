@@ -1,45 +1,36 @@
-import React, { useState } from "react";
-import person1 from '../../assets/Person1.jpg';
-import Employe_Card from "../../Components/Employe_Card";
-import Employe_Form from "../../Components/Employe_Form";
+import React, { useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
+import axios from 'axios';
+import Employe_Card from '../../Components/Employe_Card';
+import Employe_Form from '../../Components/Employe_Form'
 
 function Employe() {
-  const [attended, setAttended] = useState(
-  [
-    {
-      ID: "1",
-      Name: "Rahul",
-      Email: "rahul@example.com",
-      Phone: "123-456-7890",
-      Department: "Development",
-      JoiningDate: "2023-05-15",
-      Image: person1,
-    },
-    {
-      ID: "2",
-      Name: "Rahul",
-      Email: "rahul@example.com",
-      Phone: "123-456-7890",
-      Department: "Development",
-      JoiningDate: "2023-05-15",
-      Image: person1,
-    },
-    {
-      ID: "3",
-      Name: "Rahul",
-      Email: "rahul@example.com",
-      Phone: "123-456-7890",
-      Department: "Development",
-      JoiningDate: "2023-05-15",
-      Image: person1,
-    }
-  ]
-);
-
+  const [attended, setAttended] = useState([]);
   const [showForm, setShowForm] = useState(false);
 
-  const handleAddEmployee = (newEmployee) => {
-    setAttended([...attended, { ...newEmployee, ID: attended.length + 1 }]);
+  const fetchData = async () => {
+    try {
+      const res = await axios.get('http://127.0.0.1:8000/admin-employees/');
+      console.log("Attended Response:", res.data);
+
+      if (res.data.success) {
+        setAttended(res.data.employees);
+      } else {
+        toast.error('Failed to fetch data');
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      toast.error('An error occurred while fetching data. Please try again.');
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const handleAddEmployee = async (newEmployee) => {
+    setAttended([...attended, { ...newEmployee, employee_id: attended.length + 1 }]);
+    await fetchData();
   };
 
   return (
@@ -63,6 +54,7 @@ function Employe() {
         <Employe_Form
           onClose={() => setShowForm(false)}
           onSubmit={handleAddEmployee}
+          fetchData={fetchData}
         />
       )}
     </div>

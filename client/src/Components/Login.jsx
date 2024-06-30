@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom'; // Import navigate
+import { useNavigate } from 'react-router-dom'; // Single import for useNavigate
+import toast from 'react-hot-toast';
+import axios from 'axios';
 
 function Login({ onClose }) {
   const [email, setEmail] = useState("");
@@ -15,23 +17,19 @@ function Login({ onClose }) {
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    // Implement login logic here
     console.log("Logging in with:", email, password);
   };
 
   const handleForgetPassword = () => {
-    // Switch to forget password mode
     setForgetPasswordMode(true);
   };
 
   const handleBackToLogin = () => {
-    // Switch back to login mode
     setForgetPasswordMode(false);
   };
 
   const handleForgetPasswordSubmit = (e) => {
     e.preventDefault();
-    // Form validation
     const newErrors = {};
     if (forgetPasswordEmail.trim() === "") {
       newErrors.forgetPasswordEmail = "Email is required";
@@ -40,7 +38,6 @@ function Login({ onClose }) {
       setErrors(newErrors);
       return;
     }
-    // Handle forget password submission here
     console.log("Forget password submitted with email:", forgetPasswordEmail);
     setForgetPasswordSubmitted(true);
     setForgetPasswordEmail("");
@@ -58,18 +55,15 @@ function Login({ onClose }) {
 
   const handleForgetPasswordEmailChange = (e) => {
     setForgetPasswordEmail(e.target.value);
-    // Clear error when user starts typing in the forget password email input field
     setErrors((prevErrors) => ({ ...prevErrors, forgetPasswordEmail: "" }));
   };
 
   const handleCreateAccount = () => {
-    // Handle create account logic here
     console.log("Creating account with:", createAccountEmail, createAccountPassword, confirmPassword);
   };
 
   const handleCreateAccountSubmit = (e) => {
     e.preventDefault();
-    // Form validation
     const newErrors = {};
     if (createAccountEmail.trim() === "") {
       newErrors.createAccountEmail = "Email is required";
@@ -87,7 +81,6 @@ function Login({ onClose }) {
       setErrors(newErrors);
       return;
     }
-    // Handle create account submission
     handleCreateAccount();
   };
 
@@ -114,9 +107,8 @@ function Login({ onClose }) {
     setCreateAccountMode(false);
   };
 
-  const handleLoginSubmit = (e) => {
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
-    // Form validation for login
     const newErrors = {};
     if (email.trim() === "") {
       newErrors.email = "Email is required";
@@ -128,13 +120,19 @@ function Login({ onClose }) {
       setErrors(newErrors);
       return;
     }
-    // Check if email and password match the predefined values
-    if (email === "sasidharpinjala@gmail.com" || email === "Sasidharpinjala@gmail.com" && password === "sasi") {
-      // Navigate to admin route
-      navigate("/admin");
-    } else {
-      // Display error if email or password is incorrect
-      setErrors({ email: "Invalid email or password", password: "Invalid email or password" });
+
+    try {
+      const data = { email: email, password: password };
+      const res = await axios.post(`http://127.0.0.1:8000/login/`, data);
+      
+      if (res.data.success) {
+        navigate('/admin');
+      } else {
+        toast.error(res.data.message);
+      }
+    } catch (error) {
+      console.error('Error logging in:', error);
+      toast.error('An error occurred while logging in. Please try again.');
     }
   };
 
@@ -237,7 +235,7 @@ function Login({ onClose }) {
               >
                 Create Account
               </button>
-              <div className="text-center  text-primary cursor-pointer mt-4" onClick={handleBackToLoginFromCreateAccount}>
+              <div className="text-center text-primary cursor-pointer mt-4" onClick={handleBackToLoginFromCreateAccount}>
                 Already have an account? Click here to Log in
               </div>
             </div>
@@ -271,8 +269,8 @@ function Login({ onClose }) {
                   <p className="text-red-500 text-xs italic">{errors.password}</p>
                 )}
                 <div className="text-right text-primary cursor-pointer mt-4" onClick={handleForgetPassword}>
-                Forgot Password?
-              </div>
+                  Forgot Password?
+                </div>
               </div>
               <button
                 type="submit"
@@ -280,7 +278,6 @@ function Login({ onClose }) {
               >
                 Log In
               </button>
-              
               <div className="text-center text-primary cursor-pointer mt-4" onClick={handleCreateAccountMode}>
                 Don't have an account? Click here to Create Account
               </div>
