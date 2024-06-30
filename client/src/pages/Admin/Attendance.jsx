@@ -1,51 +1,43 @@
-import React, { useState } from "react";
-import person1 from '../../assets/Person1.jpg'
+import React, { useState, useEffect } from "react";
 import Attend from "../../Components/Attend";
-import person2 from '../../assets/Person2.jpg'
 import NotAttend from "../../Components/NotAttend";
+import toast from 'react-hot-toast';
+import axios from 'axios';
 
-function Attendance(){
-
-    const [attended,setAttended] = useState([
-        {
-            Name:"Rahul",
-            Time:"9:20 AM",
-            Images:[person1,person1,person1,person1,person1,person1]
-        },
-        {
-            Name:"Rahul",
-            Time:"9:20 AM",
-            Images:[person1,person1,person1,person1,person1,person1]
-        },
-        {
-            Name:"Rahul",
-            Time:"9:20 AM",
-            Images:[person1,person1,person1,person1,person1,person1]
-        }
-    ]);
-
-    const [notattended,setNotAttended] = useState([
-        {
-            Name:"John",
-            Image:person2
-        },
-        {
-            Name:"John",
-            Image:person2
-        },
-        {
-            Name:"John",
-            Image:person2
-        }
-    ]);
-
+function Attendance() {
+    const [attended, setAttended] = useState([]);
+    const [notAttended, setNotAttended] = useState([]);
     const [selectedOption, setSelectedOption] = useState("Attended");
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const resAttended = await axios.get(`http://127.0.0.1:8000/attended/`);
+                const resNotAttended = await axios.get(`http://127.0.0.1:8000/not_attended/`);
+
+                console.log("Attended Response:", resAttended.data);
+                console.log("Not Attended Response:", resNotAttended.data);
+
+                if (resAttended.data.success && resNotAttended.data.success) {
+                    setAttended(resAttended.data.attended);
+                    setNotAttended(resNotAttended.data.response);  // Ensure this is the correct key
+                } else {
+                    toast.error('Failed to fetch data');
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                toast.error('An error occurred while fetching data. Please try again.');
+            }
+        };
+
+        fetchData();
+    }, []);
 
     const handleSelectChange = (e) => {
         setSelectedOption(e.target.value);
     };
 
-    return(
+    return (
         <div>
             <div>
                 <div>
@@ -60,19 +52,28 @@ function Attendance(){
                 </div>
                 <div className="md:ml-10 flex flex-col md:flex-row gap-8 justify-center items-center md:justify-normal md:items-normal">
                     {selectedOption === "Attended" && 
-                        attended.map((obj,i)=>(
-                            <Attend key={i} name={obj.Name} time={obj.Time}  images= {obj.Images} />
+                        attended.map((obj, i) => (
+                            <Attend 
+                                key={i} 
+                                name={obj.employee_name} 
+                                time={obj.attendedtime} 
+                                image={obj.image} 
+                            />
                         ))
                     }
                     {selectedOption === "Not Attended" && 
-                        notattended.map((obj,i)=>(
-                            <NotAttend key={i} name={obj.Name}   image= {obj.Image} />
+                        notAttended.map((obj, i) => (
+                            <NotAttend 
+                                key={i} 
+                                name={obj.name} 
+                                image={obj.image} 
+                            />
                         ))
                     }
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
 export default Attendance;

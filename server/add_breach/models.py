@@ -3,7 +3,9 @@ from django.db import models
 class Breach(models.Model):
     breach_id = models.AutoField(primary_key=True)
     breach_time = models.DateTimeField()
-    image = models.TextField()
+
+    image = models.TextField(blank=True, null=True)
+
 
     class Meta:
         db_table = 'breaches' 

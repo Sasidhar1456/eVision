@@ -31,11 +31,11 @@ function Attend_Modal({ onClose,images }) {
 
         <div className="grid md:grid-cols-3 grid-cols-1 overflow-y-auto max-h-110">
             {
-                images.map((img,i)=>(
-                    <div key={i} className=" m-2 ">
-                        <img src={img} alt={"img"+i+1} className="object-cover w-60 md:h-52 h-64 rounded-lg "/>
+                
+                    <div  className=" m-2 ">
+                        <img src={images}  className="object-cover w-60 md:h-52 h-64 rounded-lg "/>
                     </div>
-                ))
+                
             }
         </div>
         

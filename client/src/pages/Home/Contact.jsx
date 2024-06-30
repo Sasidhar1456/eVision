@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import icon from '../../assets/icon.png'
+import toast from 'react-hot-toast';
+import axios from 'axios';
+
 
 function Contact() {
     useEffect(() => {
@@ -18,8 +21,18 @@ function Contact() {
         return () => AOS.refresh();
     }, []);
 
+    const [name, setName] = useState("");
+    const [phone, setPhone] = useState("");
     const [email, setEmail] = useState("");
     const [query, setQuery] = useState("");
+
+    const handleNameChange = (e) => {
+        setName(e.target.value);
+    };
+
+    const handlePhoneChange = (e) => {
+        setPhone(e.target.value);
+    };
 
     const handleEmailChange = (e) => {
         setEmail(e.target.value);
@@ -29,11 +42,33 @@ function Contact() {
         setQuery(e.target.value);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault();
         // You can access email and query here to submit the data
-        console.log("Email:", email);
-        console.log("Query:", query);
+
+        try {
+            const data = { name:name,phone_no:phone,email:email,query:query }
+            const res = await axios.post('http://127.0.0.1:8000/admin-query/', data);
+                console.log("res", res);
+            if (res.data.success) {
+                setName("");
+                setPhone("");
+                setEmail("");
+                setQuery("");
+                toast.success("Message Sent Sucessfully")
+            }
+            else {
+                // fetch failed
+                toast.error(response.data.message);
+            }
+        }
+        catch (error) {
+            console.error('Error fetching', error);
+            toast.error('An error occurred while fecthing. Please try again.');
+        };
+        
+        
+
     };
 
     return (
@@ -48,15 +83,15 @@ function Contact() {
                             type="text"
                             placeholder="Your Name"
                             className="mb-7 w-72 md:w-96 h-12 outline-none border-2 border-gray-500 focus:border-2 focus:border-black rounded-md pl-2 text-lg text-primary"
-                            value={email} required={true}
-                            onChange={handleEmailChange}
+                            value={name} required={true}
+                            onChange={handleNameChange}
                         />
                     <input
                             type="tel"
                             placeholder="Your Phone"
                             className="mb-7 w-72 md:w-96 h-12 outline-none border-2 border-gray-500 focus:border-2 focus:border-black rounded-md pl-2 text-lg text-primary"
-                            value={email} required={true}
-                            onChange={handleEmailChange}
+                            value={phone} required={true}
+                            onChange={handlePhoneChange}
                         />
                         <input
                             type="email"
