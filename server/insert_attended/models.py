@@ -6,7 +6,7 @@ class Attended(models.Model):
     employee_id = models.IntegerField()
     employee_name = models.CharField(max_length=255)
     attendedtime = models.DateTimeField()
-    image = models.ImageField(upload_to='images/')
+    image = models.TextField()
 
     class Meta:
         db_table = 'attended'
