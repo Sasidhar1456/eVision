@@ -79,7 +79,7 @@ function Nav_Admin(){
                 <CustomLink name="Home" to="/admin/" ham={ham} />
                 <CustomLink name="Attendance" to="/admin/attendance" ham={ham} />
                 <CustomLink name="Breaches" to="/admin/breach" ham={ham} />
-                <CustomLink name="Employes" to="/admin/employe" ham={ham} />
+                <CustomLink name="Employees" to="/admin/employe" ham={ham} />
                 <div className="md:flex flex-col justify-center">
                   <button
                     className="bg-primary text-white px-3  py-1 rounded-md mr-5 md:mr-0 "

@@ -3,10 +3,12 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 import Employe_Card from '../../Components/Employe_Card';
 import Employe_Form from '../../Components/Employe_Form'
+import Employe_Modal from '../../Components/Employe_Modal'; // Import Employe_Modal
 
 function Employe() {
   const [attended, setAttended] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [selectedEmployee, setSelectedEmployee] = useState(null); // State for the selected employee
 
   const fetchData = async () => {
     try {
@@ -33,6 +35,10 @@ function Employe() {
     await fetchData();
   };
 
+  const handleCardClick = (employee) => {
+    setSelectedEmployee(employee); // Set the selected employee
+  };
+
   return (
     <div>
       <div>
@@ -46,7 +52,7 @@ function Employe() {
         </div>
         <div className="md:ml-10 flex flex-col md:flex-row gap-8 justify-center items-center md:justify-normal md:items-normal">
           {attended.map((employee, i) => (
-            <Employe_Card key={i} employee={employee} />
+            <Employe_Card key={i} employee={employee} onClick={() => handleCardClick(employee)} fetchData = {fetchData} />
           ))}
         </div>
       </div>
@@ -55,6 +61,13 @@ function Employe() {
           onClose={() => setShowForm(false)}
           onSubmit={handleAddEmployee}
           fetchData={fetchData}
+        />
+      )}
+      {selectedEmployee && (
+        <Employe_Modal
+          onClose={() => setSelectedEmployee(null)} // Close the modal
+          employee={selectedEmployee}
+          fetchData={fetchData} // Pass the fetchData function to the modal
         />
       )}
     </div>

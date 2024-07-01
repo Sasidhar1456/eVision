@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
-function Employe_Modal({ onClose, employee }) {
+function Employe_Modal({ onClose, employee, fetchData }) {
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({ ...employee });
 
@@ -30,11 +32,22 @@ function Employe_Modal({ onClose, employee }) {
     setIsEditing(true);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic here (e.g., update employee details)
-    setIsEditing(false); // Exit edit mode
-    onClose(); // Close the modal
+    try {
+      const res = await axios.put(`http://127.0.0.1:8000/update-employee/${employee.employee_id}/`, formData);
+      if (res.data.success) {
+        toast.success('Employee updated successfully');
+        fetchData(); // Refresh the employee list
+        setIsEditing(false); // Exit edit mode
+        onClose(); // Close the modal
+      } else {
+        toast.error(res.data.message || 'Failed to update employee');
+      }
+    } catch (error) {
+      console.error('Error updating employee:', error);
+      toast.error('An error occurred while updating employee. Please try again.');
+    }
   };
 
   const handleCancel = () => {
@@ -100,7 +113,7 @@ function Employe_Modal({ onClose, employee }) {
               <input
                 type="tel"
                 id="phone"
-                name="phone"
+                name="phone_no"
                 className="w-72 md:w-96 h-12 outline-none border-2 border-gray-500 focus:border-2 focus:border-black rounded-md pl-2 text-lg text-primary"
                 value={formData.phone_no}
                 onChange={handleInputChange}
@@ -128,23 +141,11 @@ function Employe_Modal({ onClose, employee }) {
               <input
                 type="date"
                 id="joiningDate"
-                name="joiningDate"
+                name="joindate"
                 className="w-72 md:w-96 h-12 outline-none border-2 border-gray-500 focus:border-2 focus:border-black rounded-md pl-2 text-lg text-primary"
                 value={formData.joindate}
                 onChange={handleInputChange}
                 required
-              />
-            </div>
-            <div className="mb-5">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="image">
-                Image
-              </label>
-              <input
-                type="file"
-                id="image"
-                name="image"
-                className="w-72 md:w-96 h-12 outline-none rounded-md pl-2 text-lg text-primary"
-                onChange={handleImageChange}
               />
             </div>
             <div className="flex items-center justify-between">

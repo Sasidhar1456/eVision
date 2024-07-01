@@ -42,7 +42,7 @@ function Breach(props) {
           </button>
         </div>
       </div>
-      {isModalOpen && <Breach_Modal onClose={handleModalClose} images={props.images} />}
+      {isModalOpen && <Breach_Modal onClose={handleModalClose} props={props} images={props.images} />}
     </div>
   );
 }

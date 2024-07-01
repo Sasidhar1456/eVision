@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import person_icon from '../assets/person_icon.png';
 import Employe_Modal from './Employe_Modal';
 
-function Employe_Card({ employee }) {
+function Employe_Card({ employee , fetchData}) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [imageSrc, setImageSrc] = useState('');
 
@@ -47,7 +47,7 @@ function Employe_Card({ employee }) {
           </button>
         </div>
       </div>
-      {isModalOpen && <Employe_Modal onClose={handleModalClose} employee={employee} />}
+      {isModalOpen && <Employe_Modal onClose={handleModalClose} employee={employee} fetchData={fetchData}/>}
     </div>
   );
 }
