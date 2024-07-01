@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Breach_Modal from "./Breach_Modal";
 
-function Breach(props) {
+function Breach_Card({ name, time, images, fetchData }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   function formatTime(timeString) {
@@ -26,13 +26,13 @@ function Breach(props) {
     <div className="shadow-lg bg-third rounded-lg p-2 w-60">
       <div className="rounded-lg">
         <img
-          src={convertBase64ToImageSrc(props.images)}
+          src={convertBase64ToImageSrc(images[0])} // assuming the first image is used
           className="object-cover w-60 h-64 rounded-lg"
           alt="Breach"
         />
       </div>
       <div>
-        <div className="mt-2 pl-2 text-md">Breached at {formatTime(props.time)}</div>
+        <div className="mt-2 pl-2 text-md">Breached at {formatTime(time)}</div>
         <div className="mt-4 flex justify-end">
           <button
             className="bg-primary text-white px-3 py-1 mb-2 rounded-md mr-2"
@@ -42,9 +42,11 @@ function Breach(props) {
           </button>
         </div>
       </div>
-      {isModalOpen && <Breach_Modal onClose={handleModalClose} props={props} images={props.images} />}
+      {isModalOpen && (
+        <Breach_Modal onClose={handleModalClose} props={{ breach_id: name }} images={images} fetchData={fetchData} />
+      )}
     </div>
   );
 }
 
-export default Breach;
+export default Breach_Card;

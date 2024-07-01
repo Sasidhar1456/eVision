@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import toast from 'react-hot-toast';
 import axios from 'axios';
 
-function Breach_Modal({ onClose, images, props }) {
+function Breach_Modal({ onClose, images, props, fetchData }) {
+  console.log(props);
   const [showForm, setShowForm] = useState(false);
   const [imageSrcList, setImageSrcList] = useState([]);
   const [formData, setFormData] = useState({
@@ -51,7 +52,7 @@ function Breach_Modal({ onClose, images, props }) {
       };
 
       const res = await axios.post('http://127.0.0.1:8000/create-employees/', dataToSend);
-      
+      const res1 = await axios.delete(`http://127.0.0.1:8000/delete_breach/${props.breach_id}/`)
 
       if (res.data.status === 'success') {
         toast.success('Employee added successfully');
@@ -66,6 +67,7 @@ function Breach_Modal({ onClose, images, props }) {
         });
         setShowForm(false);
         onClose();
+        fetchData(); // Refetch the data
       } else {
         toast.error(res.data.message || 'Failed to add employee');
       }
