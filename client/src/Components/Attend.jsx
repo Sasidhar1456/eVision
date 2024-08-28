@@ -9,6 +9,7 @@ function formatTime(timeString) {
 }
 
 function Attend(props) {
+  console.log(props.image)
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleModalOpen = () => {
@@ -45,7 +46,7 @@ function Attend(props) {
           </button>
         </div>
       </div>
-      {isModalOpen && <Attend_Modal onClose={handleModalClose} images={props.images} />}
+      {isModalOpen && <Attend_Modal onClose={handleModalClose} images={props.image} />}
     </div>
   );
 }

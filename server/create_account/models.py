@@ -10,7 +10,7 @@ class Admin(models.Model):
         managed=False
 
     def __str__(self):
-        return self.username
+        return self.admin_email
 
 
 

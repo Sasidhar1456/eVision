@@ -33,7 +33,7 @@ function Attend_Modal({ onClose,images }) {
             {
                 
                     <div  className=" m-2 ">
-                        <img src={images}  className="object-cover w-60 md:h-52 h-64 rounded-lg "/>
+                        <img src={`data:image/jpeg;base64,${images}`}  className="object-cover w-60 md:h-52 h-64 rounded-lg "/>
                     </div>
                 
             }

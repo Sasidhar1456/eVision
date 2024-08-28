@@ -16,10 +16,6 @@ function Login({ onClose }) {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    console.log("Logging in with:", email, password);
-  };
-
   const handleForgetPassword = () => {
     setForgetPasswordMode(true);
   };
@@ -58,11 +54,7 @@ function Login({ onClose }) {
     setErrors((prevErrors) => ({ ...prevErrors, forgetPasswordEmail: "" }));
   };
 
-  const handleCreateAccount = () => {
-    console.log("Creating account with:", createAccountEmail, createAccountPassword, confirmPassword);
-  };
-
-  const handleCreateAccountSubmit = (e) => {
+  const handleCreateAccountSubmit = async (e) => {
     e.preventDefault();
     const newErrors = {};
     if (createAccountEmail.trim() === "") {
@@ -81,7 +73,7 @@ function Login({ onClose }) {
       setErrors(newErrors);
       return;
     }
-    handleCreateAccount();
+    await handleCreateAccount();
   };
 
   const handleCreateAccountEmailChange = (e) => {
@@ -107,6 +99,33 @@ function Login({ onClose }) {
     setCreateAccountMode(false);
   };
 
+  const handleCreateAccount = async () => {
+    const adminId = Math.floor(100 + Math.random() * 900); // Random three-digit number
+    const payload = {
+      admin_id: adminId,
+      admin_email: createAccountEmail,
+      admin_password: createAccountPassword,
+      confirm_password: confirmPassword,
+    };
+
+    try {
+      const res = await axios.post('http://127.0.0.1:8000/create_account/', payload);
+
+      if (res.data.success) {
+        setCreateAccountEmail("");
+        setCreateAccountPassword("");
+        setConfirmPassword("");
+        setCreateAccountMode(false);
+        toast.success("Account Created Sucessfully");
+      } else {
+        toast.error(res.data.message || 'Failed to create account');
+      }
+    } catch (error) {
+      console.error('Error creating account:', error);
+      toast.error('An error occurred while creating the account. Please try again.');
+    }
+  };
+
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     const newErrors = {};
@@ -124,7 +143,7 @@ function Login({ onClose }) {
     try {
       const data = { email: email, password: password };
       const res = await axios.post(`http://127.0.0.1:8000/login/`, data);
-      
+
       if (res.data.success) {
         navigate('/admin');
       } else {
